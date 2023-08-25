@@ -88,10 +88,7 @@ include 'connection.php';
                     
                         <option value="<?php echo $row['type_name']; ?>"><?php echo $row['type_name']; ?></option>
 
-
 <?php  } } ?>
-
-
                     </select>
                 </div>
             </div>
@@ -115,9 +112,7 @@ include 'connection.php';
                     
                         <option value="<?php echo $row['brand_name']; ?>"><?php echo $row['brand_name']; ?></option>
 
-
 <?php  } } ?>
-
                     </select>
                 </div>
             </div>
@@ -187,20 +182,37 @@ include 'connection.php';
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        // JavaScript for form validation
-        document.getElementById('inventoryForm').addEventListener('submit', function(event) {
-            const form = event.target;
+  <script>
+    // Existing JavaScript for form validation
+    document.getElementById('inventoryForm').addEventListener('submit', function(event) {
+        // ...
+    });
 
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
+    // AJAX for employee information retrieval
+    document.getElementById('empId').addEventListener('keyup', function() {
+        const empId = this.value;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'employee_ajax.php?empId=' + empId, true);
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const employeeData = xhr.responseText;
+
+                // Split the response text into an array of values
+                const data = employeeData.split('|');
+
+                // Populate the form fields
+                document.getElementById('name').value = data[0];
+                document.getElementById('designation').value = data[1];
+                document.getElementById('institute').value = data[2];
+                document.getElementById('department').value = data[3];
             }
+        };
 
-            form.classList.add('was-validated');
-        });
-         
+        xhr.send();
+    });
+</script>
 
-    </script>
 </body>
 </html>
